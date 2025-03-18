@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" href="style.css">
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Parmar Construction</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="login-container">
+    <img src="Parmar_construction_logo.png" alt="Parmar Construction Logo" class="logo">
+    <h1>Parmar Construction - Login</h1>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="Username" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+    </form>
+    <p id="loginError" class="error"></p>
+</div>
+
+<script>
+    const correctUsername = "admin";
+    const correctPassword = "Parmar@299";
+
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (username === correctUsername && password === correctPassword) {
+            window.location.href = 'form.html';
+        } else {
+            document.getElementById('loginError').textContent = "Invalid username or password!";
+        }
+    });
+</script>
+
+</body>
+</html>

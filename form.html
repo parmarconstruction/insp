@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parmar Construction - PPE & Attendance Form</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            overflow-x: hidden;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+            border-radius: 12px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #003366;
+            margin-bottom: 10px;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            max-width: 120px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #0055A4;
+            outline: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-group label {
+            width: 48%;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.2);
+        }
+
+        .workman-section {
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .ppe-list label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        button {
+            background-color: #003366;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0055A4;
+            transform: scale(1.02);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .checkbox-group label {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="./Parmar_construction_logo.png" alt="Parmar Construction Logo">
+    <h1>Parmar Construction - PPE & Attendance Form</h1>
+    <h2>Vendor Code: P299 | TATA Steel Jamshedpur</h2>
+
+    <form id="ppeForm">
+        <!-- Date Selection -->
+        <label for="date">Select Date:</label>
+        <input type="date" id="date" name="date" required>
+
+        <!-- Site Selection -->
+        <label for="site">Select Site:</label>
+        <select id="site" required>
+            <option value="">-- Select Site --</option>
+            <option value="R&D SCS">R&D SCS</option>
+            <option value="NBM">NBM</option>
+            <option value="WRM">WRM</option>
+        </select>
+
+        <!-- Attendance List -->
+        <h3>Mark Attendance</h3>
+        <div id="attendanceList" class="checkbox-group"></div>
+
+        <!-- PPE Checklist -->
+        <h3>PPE Checklist</h3>
+        <div id="ppeChecklist"></div>
+
+        <!-- Document Upload -->
+        <label>Toolbox Meeting (PDF/JPEG):</label>
+        <input type="file" name="toolbox_meeting" accept=".pdf, .jpeg, .jpg" required>
+
+        <label>Work Permit (PDF/JPEG):</label>
+        <input type="file" name="work_permit" accept=".pdf, .jpeg, .jpg" required>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div class="footer">
+        &copy; 2025 Parmar Construction | Vendor Code: P299 | TATA Steel Jamshedpur
+    </div>
+</div>
+
+<script>
+    const workmen = {
+        "R&D SCS": [
+            "Arjun Gope", "Devendra Kumar Singh", "Ekadashi Sen", "Jadu Mandal", "Lallu Kumar", "Laxmikant Choudhary",
+            "Niranjan Gope", "Rahit Ghatuary", "Rajendar Kumar Rajak", "Rajesh Kumar Manik", "Sunil Mishra"
+        ],
+        "NBM": [
+            "Anurag Dhan", "Harish Singh Sardar", "Janmajay Kumar Singh", "Jay Narayan Singh", "Lakhan Purty", 
+            "Mahadeb Mahato", "Raj Kishore Patro", "Shiva Kumar Sahare", "Vicky Kumar Mishra"
+        ],
+        "WRM": [
+            "Akash Hembrom", "Anumay Mistry", "Kalicharan Gorai", "Kartik Namata", "Sanjay Gope", "Saroj Kumar Murmu"
+        ]
+    };
+
+    const ppeItems = ["Safety Goggles", "Nose Mask", "Hand Gloves", "Ear Plugs", "Safety Vest", "Safety Helmet", "Safety Shoes"];
+
+    document.getElementById("site").addEventListener("change", function () {
+        let site = this.value;
+        const attendanceList = document.getElementById("attendanceList");
+        attendanceList.innerHTML = "";
+
+        if (site) {
+            workmen[site].forEach(worker => {
+                attendanceList.innerHTML += `
+                    <label>
+                        <input type="checkbox" name="attendance" value="${worker}" onchange="togglePPEChecklist('${worker}')">
+                        ${worker}
+                    </label>
+                `;
+            });
+        }
+    });
+
+    function togglePPEChecklist(worker) {
+        console.log(`${worker} marked present.`);
+    }
+</script>
+
+</body>
+</html>
